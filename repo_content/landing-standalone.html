@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Diego — Sistema de Adquisición Visual. Fotos, marca y anuncios potenciados por IA para negocios locales en Asunción." />
+  <title>Diego | Sistema de Adquisición Visual</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#F8F9FB', card: '#FFFFFF', accent: '#6366F1',
+              accentHover: '#4F46E5', accentLight: '#EEF2FF',
+              text: '#111827', muted: '#6B7280', border: '#E5E7EB'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          boxShadow: {
+            'soft': '0 8px 30px rgba(0,0,0,0.04)',
+            'card': '0 20px 40px rgba(0,0,0,0.06)',
+            'card-hover': '0 30px 60px rgba(0,0,0,0.12)',
+            'btn': '0 4px 14px 0 rgba(99,102,241,0.3)',
+            'btn-hover': '0 6px 20px 0 rgba(99,102,241,0.45)',
+          },
+          keyframes: {
+            'fade-in-up': { '0%': { opacity: '0', transform: 'translateY(24px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+            'blob': { '0%': { transform: 'translate(0px,0px) scale(1)' }, '33%': { transform: 'translate(30px,-50px) scale(1.1)' }, '66%': { transform: 'translate(-20px,20px) scale(0.9)' }, '100%': { transform: 'translate(0px,0px) scale(1)' } },
+            'glow-pulse': { '0%,100%': { boxShadow: '0 0 20px rgba(99,102,241,0.2)' }, '50%': { boxShadow: '0 0 40px rgba(99,102,241,0.4)' } },
+            blink: { '50%': { opacity: '0' } }
+          },
+          animation: {
+            'blob': 'blob 7s infinite',
+            'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+            'blink': 'blink 1s step-start infinite',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: #F8F9FB;
+      color: #0f172a;
+      overflow-x: hidden;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes blob {
+      0% {
+        transform: translate(0px, 0px) scale(1);
+      }
+
+      33% {
+        transform: translate(30px, -50px) scale(1.1);
+      }
+
+      66% {
+        transform: translate(-20px, 20px) scale(0.9);
+      }
+
+      100% {
+        transform: translate(0px, 0px) scale(1);
+      }
+    }
+
+    @keyframes glow-pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+      }
+
+      50% {
+        box-shadow: 0 0 40px rgba(99, 102, 241, 0.4);
+      }
+    }
+
+    @keyframes marquee-scroll-x {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(calc(-100% - var(--marquee-gap)));
+      }
+    }
+
+    .animate-blob {
+      animation: blob 7s infinite;
+    }
+
+    .animate-glow-pulse {
+      animation: glow-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes hero-enter {
+      from {
+        opacity: 0;
+        transform: translateY(28px) scale(0.98);
+        filter: blur(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes float-soft {
+      0%,
+      100% {
+        transform: translate3d(0, 0, 0) rotate(var(--float-rotate, 0deg));
+      }
+
+      50% {
+        transform: translate3d(0, -12px, 0) rotate(var(--float-rotate, 0deg));
+      }
+    }
+
+    @keyframes shine-sweep {
+      from {
+        transform: translateX(-120%) skewX(-18deg);
+      }
+
+      to {
+        transform: translateX(220%) skewX(-18deg);
+      }
+    }
+
+    @keyframes border-glow {
+      0%,
+      100% {
+        opacity: 0.45;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes spotlight-drift {
+      0%,
+      100% {
+        transform: translate3d(-8%, -6%, 0) scale(1);
+      }
+
+      50% {
+        transform: translate3d(8%, 6%, 0) scale(1.08);
+      }
+    }
+
+    .hero-enter {
+      opacity: 0;
+      animation: hero-enter 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: var(--enter-delay, 0ms);
+    }
+
+    .animate-float-soft {
+      animation: float-soft 6s ease-in-out infinite;
+      animation-delay: var(--float-delay, 0ms);
+    }
+
+    .shine-surface,
+    .shine-on-hover {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shine-surface::after,
+    .shine-on-hover::after {
+      content: "";
+      position: absolute;
+      inset: -40% auto -40% -30%;
+      width: 34%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+      transform: translateX(-120%) skewX(-18deg);
+      pointer-events: none;
+    }
+
+    .shine-surface::after {
+      animation: shine-sweep 4.8s ease-in-out infinite;
+      animation-delay: var(--shine-delay, 1s);
+    }
+
+    .shine-on-hover:hover::after {
+      animation: shine-sweep 0.85s ease-out;
+    }
+
+    .premium-lift {
+      transform: translateZ(0);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.45s ease;
+    }
+
+    .premium-lift:hover {
+      transform: translateY(-6px) scale(1.01);
+      border-color: rgba(99, 102, 241, 0.22);
+      box-shadow: 0 28px 70px -28px rgba(17, 24, 39, 0.28), 0 14px 36px -24px rgba(99, 102, 241, 0.55);
+    }
+
+    .glow-border {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .glow-border::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.45), rgba(16, 185, 129, 0.22), rgba(236, 72, 153, 0.22));
+      opacity: 0;
+      z-index: -1;
+      filter: blur(14px);
+      transition: opacity 0.45s ease;
+    }
+
+    .glow-border:hover::before,
+    .glow-border.is-active::before {
+      opacity: 1;
+      animation: border-glow 2.6s ease-in-out infinite;
+    }
+
+    .ambient-spotlight {
+      position: absolute;
+      inset: auto 8% -12% auto;
+      width: min(34rem, 78vw);
+      height: min(34rem, 78vw);
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.16), rgba(236, 72, 153, 0.08) 42%, transparent 68%);
+      filter: blur(22px);
+      pointer-events: none;
+      animation: spotlight-drift 9s ease-in-out infinite;
+    }
+
+    .tab-panel-animate {
+      animation: hero-enter 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+      animation-delay: 4s;
+    }
+
+    .cursor-blink {
+      display: inline-block;
+      width: 3px;
+      height: 0.85em;
+      background-color: #6366F1;
+      margin-left: 2px;
+      vertical-align: middle;
+      border-radius: 1px;
+      animation: blink 1s step-start infinite;
+    }
+
+    .accordion-content {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.35s ease-out, opacity 0.3s ease-out;
+      opacity: 0;
+    }
+
+    .accordion-content.open {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+
+    .accordion-inner {
+      overflow: hidden;
+    }
+
+    .reveal {
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(2rem);
+      opacity: 0;
+      filter: blur(8px);
+    }
+
+    .reveal.v {
+      transform: translateY(0);
+      opacity: 1;
+      filter: blur(0);
+    }
+
+    .reveal-r {
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateX(2rem);
+      opacity: 0;
+      filter: blur(8px);
+    }
+
+    .reveal-r.v {
+      transform: translateX(0);
+      opacity: 1;
+      filter: blur(0);
+    }
+
+    .reveal.v.premium-lift:hover,
+    .reveal-r.v.premium-lift:hover {
+      transform: translateY(-6px) scale(1.01);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.001ms !important;
+      }
+
+      .hero-enter,
+      .reveal,
+      .reveal-r {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+      }
+    }
+
+    :root {
+      --marquee-gap: clamp(0.75rem, 2vw, 2.5rem);
+      --marquee-duration: 40s;
+    }
+
+    .marquee-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: var(--marquee-gap);
+      margin: auto;
+      max-width: 100vw;
+      overflow: hidden;
+      padding-bottom: 2rem;
+    }
+
+    .marquee {
+      display: flex;
+      overflow: hidden;
+      user-select: none;
+      gap: var(--marquee-gap);
+      mask-image: linear-gradient(to right, hsl(0 0% 0%/0), hsl(0 0% 0%/1) 8%, hsl(0 0% 0%/1) 92%, hsl(0 0% 0%/0));
+    }
+
+    @media (min-width:640px) {
+      .marquee {
+        mask-image: linear-gradient(to right, hsl(0 0% 0%/0), hsl(0 0% 0%/1) 15%, hsl(0 0% 0%/1) 85%, hsl(0 0% 0%/0));
+      }
+    }
+
+    .marquee__group {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: var(--marquee-gap);
+      min-width: 100%;
+      animation: marquee-scroll-x var(--marquee-duration) linear infinite;
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .marquee__group {
+        animation-play-state: paused;
+      }
+    }
+
+    .marquee--reverse .marquee__group {
+      animation-direction: reverse;
+      animation-delay: -3s;
+    }
+
+    .logo-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 64px;
+      min-width: 120px;
+      padding: 0 2rem;
+      border-radius: 9999px;
+      background: #F8F9FB;
+      color: #6B7280;
+      border: 1px solid #E5E7EB;
+      white-space: nowrap;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: default;
+    }
+
+    .logo-text:hover {
+      background: #6366F1;
+      color: #FFF;
+      border-color: #6366F1;
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.3), 0 4px 10px -3px rgba(99, 102, 241, 0.1);
+    }
+
+    @media (max-width:639px) {
+      .logo-text {
+        height: 52px;
+        min-width: 90px;
+        padding: 0 1.25rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (min-width:1024px) {
+      .logo-text {
+        height: 72px;
+        padding: 0 2.5rem;
+        font-size: 1.1rem;
+      }
+    }
+
+    :focus-visible {
+      outline: 2px solid #6366F1;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #F8F9FB;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #D1D5DB;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9CA3AF;
+    }
+  </style>
+  <!-- Meta Pixel Code -->
+  <script>
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ?
+        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+      n.queue = []; t = b.createElement(e); t.async = !0;
+      t.src = v; s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2107569623428591');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=618681248007314&ev=PageView&noscript=1" /></noscript>
+  <!-- End Meta Pixel Code -->
+  <meta name="facebook-domain-verification" content="zefds9b6fcytfd51etb5e5ovi8nbc6" />
+</head>
+
+<body class="font-sans">
+
+  <a href="#main-content"
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-indigo-500 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold">Saltar
+    al contenido principal</a>
+
+  <!-- ════════ NAVBAR ════════ -->
+  <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-500 bg-transparent py-4" role="navigation"
+    aria-label="Navegación principal">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="#" class="font-display text-2xl font-black tracking-tighter overflow-visible pr-1">
+          <span
+            class="bg-gradient-to-br from-slate-900 to-indigo-500 bg-clip-text text-transparent inline-block pb-0.5 pr-2">Nuñez</span>
+        </a>
+        <div class="hidden md:flex items-center space-x-2 ml-10">
+          <a href="#problema"
+            class="text-slate-600 hover:text-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-indigo-50/50">Problema</a>
+          <a href="#portafolio"
+            class="text-slate-600 hover:text-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-indigo-50/50">Resultados</a>
+          <a href="#oferta"
+            class="text-slate-600 hover:text-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-indigo-50/50">Oferta</a>
+          <a href="https://wa.me/595975190555?text=Hola!%20Ya%20le%C3%AD%20toda%20la%20propuesta%20en%20la%20landing.%20Me%20interesa%20avanzar%20y%20quiero%20que%20hablemos%20c%C3%B3mo%20adaptarla%20a%20mi%20empresa%3A%20%E2%80%A6."
+            target="_blank" rel="noopener noreferrer"
+            class="ml-4 bg-slate-900 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-slate-800 transition-all duration-300 text-sm shadow-lg shadow-slate-900/20 hover:shadow-xl transform hover:-translate-y-0.5">Cordinar
+            el inicio del servicio</a>
+        </div>
+        <button id="menu-btn" type="button"
+          class="-mr-2 flex md:hidden p-2.5 rounded-xl text-slate-500 hover:text-indigo-500 hover:bg-indigo-50/50 transition-all duration-300"
+          aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú">
+          <svg id="icon-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="icon-close" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="md:hidden overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-out"
+      role="menu">
+      <div class="px-4 pt-2 pb-6 space-y-1 bg-white/95 backdrop-blur-xl border-t border-black/5">
+        <a href="#problema" onclick="closeMenu()"
+          class="text-slate-600 hover:text-indigo-500 hover:bg-indigo-50/50 block px-4 py-3 rounded-xl text-base font-medium transition-all duration-300"
+          role="menuitem">Problema</a>
+        <a href="#portafolio" onclick="closeMenu()"
+          class="text-slate-600 hover:text-indigo-500 hover:bg-indigo-50/50 block px-4 py-3 rounded-xl text-base font-medium transition-all duration-300"
+          role="menuitem">Resultados</a>
+        <a href="#oferta" onclick="closeMenu()"
+          class="text-slate-600 hover:text-indigo-500 hover:bg-indigo-50/50 block px-4 py-3 rounded-xl text-base font-medium transition-all duration-300"
+          role="menuitem">Oferta</a>
+        <a href="https://wa.me/595975190555?text=Hola!%20Ya%20le%C3%AD%20toda%20la%20propuesta%20en%20la%20landing.%20Me%20interesa%20avanzar%20y%20quiero%20que%20hablemos%20c%C3%B3mo%20adaptarla%20a%20mi%20empresa%3A%20%E2%80%A6."
+          target="_blank" rel="noopener noreferrer"
+          class="w-full text-center block bg-slate-900 text-white px-4 py-3 rounded-full font-bold mt-4 shadow-lg hover:bg-slate-800 transition-all duration-300"
+          role="menuitem">Cordinar el inicio del servicio</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- ════════ HERO ════════ -->
+    <section
+      class="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center text-center overflow-x-clip"
+      aria-label="Sección principal">
+      <div
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-gradient-to-b from-indigo-50/60 via-purple-50/30 to-transparent -z-10 rounded-full blur-3xl"
+        aria-hidden="true"></div>
+      <div class="ambient-spotlight -z-10" aria-hidden="true"></div>
+      <div class="mb-10 max-w-4xl">
+        <div
+          class="hero-enter shine-surface inline-flex items-center gap-2.5 bg-white/80 backdrop-blur-sm border border-black/5 rounded-full px-5 py-2 mb-8 shadow-soft" style="animation-delay:80ms">
+          <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse" aria-hidden="true"></span>
+          <span class="text-xs font-semibold text-slate-600 tracking-wide uppercase">LUGARES DISPONIBLES: 2</span>
+        </div>
+        <h1 class="hero-enter font-display tracking-tight text-5xl md:text-7xl font-bold leading-tight text-slate-900 mb-6" style="animation-delay:180ms">
+          ¿Tus redes son la pieza que está frenando tu facturación?
+        </h1>
+        <p class="hero-enter text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-10 font-normal leading-relaxed" style="animation-delay:300ms">
+          Aplicá al Sistema de Adquisición Visual — Sacá tu Instagram de la lista de cuellos de botella de tu negocio.
+        </p>
+        <div class="hero-enter flex flex-col sm:flex-row items-center justify-center gap-4" style="animation-delay:420ms">
+          <a href="https://wa.me/595975190555?text=Hola!%20Quiero%20vender%20m%C3%A1s%20con%20mis%20redes.%20Vi%20tu%20propuesta%20y%20me%20interesa%20saber%20c%C3%B3mo%20aplica%20a%20mi%20negocio."
+            class="shine-on-hover bg-indigo-500 hover:bg-indigo-600 text-white font-semibold text-lg px-8 py-4 rounded-full shadow-btn hover:shadow-btn-hover transition-all duration-300 transform hover:-translate-y-1 animate-glow-pulse"
+            target="_blank" rel="noopener noreferrer">Quiero vender más</a>
+          <a href="#portafolio"
+            class="px-8 py-4 rounded-full text-slate-600 font-semibold hover:bg-white hover:shadow-soft hover:text-indigo-500 transition-all duration-300">Mirá
+            trabajos reales</a>
+        </div>
+      </div>
+      <div class="hero-enter w-full max-w-6xl relative mt-8" style="animation-delay:560ms">
+        <div
+          class="absolute -top-10 -right-10 w-40 h-40 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob"
+          aria-hidden="true"></div>
+        <div
+          class="absolute -bottom-10 -left-10 w-40 h-40 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-2000"
+          aria-hidden="true"></div>
+        <div
+          class="absolute top-1/2 right-1/4 w-24 h-24 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-40 animate-blob animation-delay-4000"
+          aria-hidden="true"></div>
+        <div class="relative flex items-center justify-center py-8 px-4">
+          <!-- Red facts LEFT -->
+          <div class="hidden md:flex flex-col gap-3 items-end mr-5 self-center z-30 flex-shrink-0">
+            <div
+              class="premium-lift bg-white rounded-2xl px-3.5 py-2.5 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.1)] border border-red-100 flex items-center gap-3 whitespace-nowrap">
+              <div class="w-7 h-7 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0"><svg
+                  class="w-3.5 h-3.5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.25 6 9 12.75l4.286-4.286a11.948 11.948 0 0 1 4.306 6.43l.776 2.898m0 0 3.182-5.511m-3.182 5.51-5.511-3.181" />
+                </svg></div>
+              <div>
+                <p class="text-[9px] text-slate-400 font-medium leading-none mb-0.5">De cada 100</p>
+                <p class="text-[11px] font-bold text-red-600 leading-none">6 compran</p>
+              </div>
+            </div>
+            <div
+              class="premium-lift bg-white rounded-2xl px-3.5 py-2.5 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.1)] border border-red-100 flex items-center gap-3 whitespace-nowrap">
+              <div class="w-7 h-7 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0"><svg
+                  class="w-3.5 h-3.5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0zM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg></div>
+              <div>
+                <p class="text-[9px] text-slate-400 font-medium leading-none mb-0.5">Costo por cliente</p>
+                <p class="text-[11px] font-bold text-red-600 leading-none">Muy alto</p>
+              </div>
+            </div>
+            <div
+              class="premium-lift bg-white rounded-2xl px-3.5 py-2.5 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.1)] border border-red-100 flex items-center gap-3 whitespace-nowrap">
+              <div class="w-7 h-7 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0"><svg
+                  class="w-3.5 h-3.5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg></div>
+              <div>
+                <p class="text-[9px] text-slate-400 font-medium leading-none mb-0.5">Retorno de la inversión</p>
+                <p class="text-[11px] font-bold text-red-600 leading-none">Casi nulo</p>
+              </div>
+            </div>
+          </div>
+          <!-- BEFORE -->
+          <div
+            class="relative z-10 flex-shrink-0 w-[42vw] max-w-[260px] md:w-[540px] -mr-[3vw] md:-mr-10 translate-y-4 -rotate-[2deg] scale-[0.93] saturate-50">
+            <div
+              class="premium-lift bg-white/70 backdrop-blur-sm rounded-[2rem] p-4 md:p-5 border border-white/60 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.08)]">
+              <div class="mb-3 md:mb-4"><span
+                  class="inline-flex items-center gap-1.5 bg-black/50 backdrop-blur-sm text-white/90 text-[9px] md:text-[10px] font-bold uppercase tracking-wider px-2.5 py-1.5 rounded-full">📸
+                  Foto Casual</span></div>
+              <img src="https://flourishing-haupia-8fcad7.netlify.app/images/699fab189a0c18c7f4b2cbee.webp"
+                alt="Estado antes: foto casual sin producción" loading="lazy"
+                class="w-full rounded-2xl object-cover aspect-[4/5]" />
+            </div>
+          </div>
+          <!-- OPTIMIZED -->
+          <div class="relative z-20 flex-shrink-0 w-[52vw] max-w-[300px] md:w-[660px]">
+            <div class="absolute -inset-4 rounded-[2.5rem] bg-indigo-400/20 blur-2xl" aria-hidden="true"></div>
+            <div
+              class="animate-float-soft relative bg-white/95 backdrop-blur-md rounded-[2rem] p-4 md:p-6 border border-white/60 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12),0_0_40px_-8px_rgba(99,102,241,0.12)]">
+              <div class="mb-3 md:mb-4"><span
+                  class="inline-flex items-center gap-1.5 bg-white border border-indigo-100 text-indigo-500 text-[9px] md:text-[10px] font-bold uppercase tracking-wider px-2.5 py-1.5 rounded-full shadow-sm">✨
+                  Estándar 5 Estrellas</span></div>
+              <img src="https://flourishing-haupia-8fcad7.netlify.app/images/699e56b61001a51ae6540847.webp"
+                alt="Estado optimizado: producción profesional" loading="lazy"
+                class="w-full rounded-2xl object-cover aspect-[4/5]" />
+              <div
+                class="animate-float-soft absolute -bottom-4 -right-2 md:-right-12 bg-white rounded-2xl px-3 md:px-4 py-2.5 md:py-3 shadow-[0_8px_30px_-4px_rgba(0,0,0,0.12)] border border-black/5 flex items-center gap-2 md:gap-3" style="--float-delay:1.1s">
+                <div
+                  class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 md:w-4 md:h-4 text-emerald-500" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-[9px] md:text-[10px] text-slate-400 font-medium leading-none mb-1">Engagement</p>
+                  <p class="text-xs md:text-sm font-bold text-emerald-500 leading-none">+320%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Green facts RIGHT -->
+          <div class="hidden md:flex flex-col gap-3 items-start ml-5 self-center z-30 flex-shrink-0">
+            <div
+              class="premium-lift bg-white rounded-2xl px-3.5 py-2.5 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.1)] border border-emerald-100 flex items-center gap-3 whitespace-nowrap">
+              <div class="w-7 h-7 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0"><svg
+                  class="w-3.5 h-3.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                </svg></div>
+              <div>
+                <p class="text-[9px] text-slate-400 font-medium leading-none mb-0.5">Mensajes recibidos</p>
+                <p class="text-[11px] font-bold text-emerald-600 leading-none">297 Consultas</p>
+              </div>
+            </div>
+            <div
+              class="premium-lift bg-white rounded-2xl px-3.5 py-2.5 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.1)] border border-emerald-100 flex items-center gap-3 whitespace-nowrap">
+              <div class="w-7 h-7 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0"><svg
+                  class="w-3.5 h-3.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.25 18 9 11.25l4.306 4.307a11.95 11.95 0 0 1 5.814-5.519l2.74-1.22m0 0-5.94-2.28m5.94 2.28-2.286 5.963" />
+                </svg></div>
+              <div>
+                <p class="text-[9px] text-slate-400 font-medium leading-none mb-0.5">Pedidos concretados</p>
+                <p class="text-[11px] font-bold text-emerald-600 leading-none">120 Ventas</p>
+              </div>
+            </div>
+            <div
+              class="premium-lift bg-white rounded-2xl px-3.5 py-2.5 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.1)] border border-emerald-100 flex items-center gap-3 whitespace-nowrap">
+              <div class="w-7 h-7 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0"><svg
+                  class="w-3.5 h-3.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+                </svg></div>
+              <div>
+                <p class="text-[9px] text-slate-400 font-medium leading-none mb-0.5">Inversión multiplicada</p>
+                <p class="text-[11px] font-bold text-emerald-600 leading-none">× 11 veces</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ LOGO MARQUEE ════════ -->
+    <section class="py-20 bg-white border-y border-black/5 overflow-hidden" aria-label="Marcas que confían en Diego">
+      <div class="max-w-2xl mx-auto text-center px-4 mb-14">
+        <p class="text-xs font-bold uppercase tracking-widest text-indigo-500 mb-3">Clientes satisfechos</p>
+        <h2 class="font-display tracking-tight text-3xl md:text-4xl font-bold text-slate-900" style="font-variant-ligatures:none">Marcas
+          que ya confiaron en nuestros servicios</h2>
+      </div>
+      <div class="marquee-wrapper">
+        <div class="marquee">
+          <div class="marquee__group">
+            <div class="logo-text font-sans font-bold tracking-tight">Neumáticos Py <span
+                class="font-normal">Automaq</span></div>
+            <div class="logo-text font-sans font-medium uppercase tracking-[0.2em] text-sm">The New Black</div>
+            <div class="logo-text font-display font-bold tracking-tight">Universo Electrodomésticos</div>
+            <div class="logo-text font-display font-black uppercase tracking-wider text-xl">Gondwana</div>
+            <div class="logo-text font-serif text-lg tracking-wide">Pérez Ramírez</div>
+            <div class="logo-text font-sans font-light uppercase tracking-[0.3em] text-sm">Studio Única</div>
+            <div class="logo-text flex items-center gap-3"><span
+                class="font-display font-black text-xl lowercase tracking-tighter">pani</span><span
+                class="font-sans text-[9px] uppercase tracking-[0.15em] opacity-50 mt-1">la vida es rica</span></div>
+            <div class="logo-text font-serif italic text-lg tracking-tight">Silvia Romero</div>
+          </div>
+          <div class="marquee__group" aria-hidden="true">
+            <div class="logo-text font-sans font-bold tracking-tight">Neumáticos Py <span
+                class="font-normal">Automaq</span></div>
+            <div class="logo-text font-sans font-medium uppercase tracking-[0.2em] text-sm">The New Black</div>
+            <div class="logo-text font-display font-bold tracking-tight">Universo Electrodomésticos</div>
+            <div class="logo-text font-display font-black uppercase tracking-wider text-xl">Gondwana</div>
+            <div class="logo-text font-serif text-lg tracking-wide">Pérez Ramírez</div>
+            <div class="logo-text font-sans font-light uppercase tracking-[0.3em] text-sm">Studio Única</div>
+            <div class="logo-text flex items-center gap-3"><span
+                class="font-display font-black text-xl lowercase tracking-tighter">pani</span><span
+                class="font-sans text-[9px] uppercase tracking-[0.15em] opacity-50 mt-1">la vida es rica</span></div>
+            <div class="logo-text font-serif italic text-lg tracking-tight">Silvia Romero</div>
+          </div>
+        </div>
+        <div class="marquee marquee--reverse">
+          <div class="marquee__group">
+            <div class="logo-text font-display font-bold uppercase tracking-tight text-xl">Haverland</div>
+            <div class="logo-text font-serif italic text-lg tracking-widest uppercase">Viruta <span
+                class="font-sans font-normal text-xs tracking-widest opacity-60 ml-1">Jewelry Store</span></div>
+            <div class="logo-text font-serif italic text-xl">Lipoesbelt</div>
+            <div class="logo-text font-sans font-bold uppercase tracking-[0.15em]">Solanas</div>
+            <div class="logo-text font-serif text-lg tracking-wide">DI <span
+                class="font-sans font-bold text-sm mx-1">+</span> CAPRI</div>
+            <div class="logo-text font-display font-bold uppercase tracking-[0.4em] text-sm">El Beso</div>
+            <div class="logo-text font-sans font-black uppercase tracking-tighter text-2xl">HAT</div>
+            <div class="logo-text font-sans font-medium uppercase tracking-[0.2em] text-sm">The New Black</div>
+          </div>
+          <div class="marquee__group" aria-hidden="true">
+            <div class="logo-text font-display font-bold uppercase tracking-tight text-xl">Haverland</div>
+            <div class="logo-text font-serif italic text-lg tracking-widest uppercase">Viruta <span
+                class="font-sans font-normal text-xs tracking-widest opacity-60 ml-1">Jewelry Store</span></div>
+            <div class="logo-text font-serif italic text-xl">Lipoesbelt</div>
+            <div class="logo-text font-sans font-bold uppercase tracking-[0.15em]">Solanas</div>
+            <div class="logo-text font-serif text-lg tracking-wide">DI <span
+                class="font-sans font-bold text-sm mx-1">+</span> CAPRI</div>
+            <div class="logo-text font-display font-bold uppercase tracking-[0.4em] text-sm">El Beso</div>
+            <div class="logo-text font-sans font-black uppercase tracking-tighter text-2xl">HAT</div>
+            <div class="logo-text font-sans font-medium uppercase tracking-[0.2em] text-sm">The New Black</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ PROBLEM ════════ -->
+    <section id="problema" class="py-24 bg-[#F8F9FB] px-4" aria-label="El problema">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid lg:grid-cols-2 gap-16 items-start">
+          <div class="reveal">
+            <div
+              class="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-500 rounded-full text-xs font-bold mb-4 uppercase tracking-wider">
+              El Problema</div>
+            <h2 class="font-display tracking-tight text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">Feed que le baja el ticket<br><span class="text-slate-400">a tu producto</span></h2>
+            <p class="text-lg text-slate-500 mb-10 leading-relaxed">Fotos de celular. Mala luz. Sin línea visual. El cliente potencial abre tu Instagram, lo lee como un negocio más chico, más informal, más barato — y cierra. El ticket promedio no entra.</p>
+            <div class="space-y-6">
+              <div class="flex gap-4 group cursor-default">
+                <div
+                  class="flex-shrink-0 w-12 h-12 bg-white rounded-xl shadow-soft flex items-center justify-center text-indigo-500 border border-black/5 group-hover:shadow-card group-hover:-translate-y-0.5 transition-all duration-300">
+                  <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3
+                    class="font-display tracking-tight text-xl font-bold text-slate-900 mb-1.5 group-hover:text-indigo-500 transition-colors duration-300">
+                    Fotos que no venden</h3>
+                  <p class="text-slate-500 leading-relaxed text-sm">Sacás fotos con el celular. Se ven amateurs. Tu
+                    producto se ve peor de lo que es en realidad.</p>
+                </div>
+              </div>
+              <div class="flex gap-4 group cursor-default">
+                <div
+                  class="flex-shrink-0 w-12 h-12 bg-white rounded-xl shadow-soft flex items-center justify-center text-indigo-500 border border-black/5 group-hover:shadow-card group-hover:-translate-y-0.5 transition-all duration-300">
+                  <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3
+                    class="font-display tracking-tight text-xl font-bold text-slate-900 mb-1.5 group-hover:text-indigo-500 transition-colors duration-300">
+                    Sin tiempo para gestionar</h3>
+                  <p class="text-slate-500 leading-relaxed text-sm">Sos dueño y gerente. No tenés 2 horas al día para
+                    pensar ideas de contenido o editar videos.</p>
+                </div>
+              </div>
+              <div class="flex gap-4 group cursor-default">
+                <div
+                  class="flex-shrink-0 w-12 h-12 bg-white rounded-xl shadow-soft flex items-center justify-center text-indigo-500 border border-black/5 group-hover:shadow-card group-hover:-translate-y-0.5 transition-all duration-300">
+                  <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M3 3v16a2 2 0 0 0 2 2h16M7 16h6M7 11h8M7 6h12" />
+                  </svg>
+                </div>
+                <div>
+                  <h3
+                    class="font-display tracking-tight text-xl font-bold text-slate-900 mb-1.5 group-hover:text-indigo-500 transition-colors duration-300">
+                    Pagaste y no funcionó</h3>
+                  <p class="text-slate-500 leading-relaxed text-sm">Agencias que suben fechas especiales irrelevantes y
+                    te cobran fortunas sin traerte un solo cliente.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="relative">
+            <div class="reveal-r relative mb-8">
+              <div
+                class="absolute inset-0 bg-gradient-to-tr from-indigo-100/80 to-purple-50/60 rounded-3xl transform rotate-3 scale-95"
+                aria-hidden="true"></div>
+              <div
+                class="premium-lift bg-white rounded-3xl shadow-card p-8 relative border border-black/5 hover:shadow-card-hover transition-shadow duration-500">
+                <div class="flex items-center justify-between mb-6">
+                  <h4 class="font-display tracking-tight text-lg font-bold text-slate-800">3 escenarios reales</h4><span
+                    class="text-xs text-slate-500">Resultado neto</span>
+                </div>
+                <div class="space-y-4">
+                  <div class="rounded-2xl border border-red-100 bg-red-50/70 p-5 backdrop-blur-sm">
+                    <div class="flex items-start justify-between gap-4">
+                      <div>
+                        <p class="text-sm font-bold text-slate-800">Solo (sin ayuda)</p>
+                        <p class="text-xs text-slate-500">Solo pauta, sin estrategia visual</p>
+                      </div><span
+                        class="text-[11px] bg-red-100 text-red-700 px-2 py-1 rounded-full font-semibold">Margen muy
+                        bajo</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+                      <div class="rounded-xl bg-white/70 border border-white/80 p-3">
+                        <p class="text-[11px] uppercase tracking-wide text-slate-500">Pusiste</p>
+                        <p class="text-sm font-semibold text-slate-800">₲ 500.000</p>
+                      </div>
+                      <div class="rounded-xl bg-white/70 border border-white/80 p-3">
+                        <p class="text-[11px] uppercase tracking-wide text-slate-500">Facturaste</p>
+                        <p class="text-sm font-semibold text-slate-800">₲ 726.000</p>
+                      </div>
+                      <div class="rounded-xl bg-red-100/80 border border-red-200 p-3">
+                        <div
+                          class="flex items-center gap-1 text-red-700 text-[11px] font-semibold uppercase tracking-wide">
+                          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m4.5 10.5 7.5-7.5 7.5 7.5" />
+                            <path d="M12 3v18" />
+                          </svg>Resultado neto
+                        </div>
+                        <p class="text-lg font-bold text-red-700">+ ₲ 226.000</p>
+                        <p class="text-[11px] text-red-600">Margen muy bajo</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="rounded-2xl border border-orange-100 bg-orange-50/70 p-5 backdrop-blur-sm">
+                    <div class="flex items-start justify-between gap-4">
+                      <div>
+                        <p class="text-sm font-bold text-slate-800">Agencia tradicional</p>
+                        <p class="text-xs text-slate-500">Honorarios altos + mala gestión</p>
+                      </div><span
+                        class="text-[11px] bg-orange-100 text-orange-700 px-2 py-1 rounded-full font-semibold">Margen
+                        bajo</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+                      <div class="rounded-xl bg-white/70 border border-white/80 p-3">
+                        <p class="text-[11px] uppercase tracking-wide text-slate-500">Pusiste</p>
+                        <p class="text-sm font-semibold text-slate-800">₲ 2.500.000</p>
+                      </div>
+                      <div class="rounded-xl bg-white/70 border border-white/80 p-3">
+                        <p class="text-[11px] uppercase tracking-wide text-slate-500">Facturaste</p>
+                        <p class="text-sm font-semibold text-slate-800">₲ 2.953.000</p>
+                      </div>
+                      <div class="rounded-xl bg-orange-100/80 border border-orange-200 p-3">
+                        <div
+                          class="flex items-center gap-1 text-orange-700 text-[11px] font-semibold uppercase tracking-wide">
+                          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m4.5 10.5 7.5-7.5 7.5 7.5" />
+                            <path d="M12 3v18" />
+                          </svg>Resultado neto
+                        </div>
+                        <p class="text-lg font-bold text-orange-700">+ ₲ 453.000</p>
+                        <p class="text-[11px] text-orange-700">Ganancia mínima</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="relative rounded-2xl border border-emerald-200 bg-emerald-50/80 p-6 shadow-lg shadow-emerald-200/40 backdrop-blur-sm ring-1 ring-emerald-200/60">
+                    <span
+                      class="absolute -top-3 right-4 bg-emerald-600 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-md">×
+                      17 de ganancia</span>
+                    <div class="flex items-start justify-between gap-4">
+                      <div>
+                        <p class="text-sm font-bold text-emerald-900">Con nosotros</p>
+                        <p class="text-xs text-emerald-700/80">Electrodomésticos · 147 ventas cerradas</p>
+                      </div><span
+                        class="text-[11px] bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-semibold">Ganancia
+                        real</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+                      <div class="rounded-xl bg-white/80 border border-emerald-100 p-3">
+                        <p class="text-[11px] uppercase tracking-wide text-emerald-700/70">Invertiste</p>
+                        <p class="text-sm font-semibold text-emerald-900 leading-tight"><span
+                            class="whitespace-nowrap">₲ 2.200.000</span> + <span class="whitespace-nowrap">₲
+                            5.850.000</span> <span class="text-[10px] opacity-80">pauta</span></p>
+                      </div>
+                      <div class="rounded-xl bg-white/80 border border-emerald-100 p-3">
+                        <p class="text-[11px] uppercase tracking-wide text-emerald-700/70">Facturaste</p>
+                        <p class="text-sm font-semibold text-emerald-900 whitespace-nowrap">₲ 143.000.000+</p>
+                      </div>
+                      <div class="rounded-xl bg-emerald-100/80 border border-emerald-200 p-3">
+                        <div
+                          class="flex items-center gap-1 text-emerald-800 text-[11px] font-semibold uppercase tracking-wide">
+                          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m4.5 10.5 7.5-7.5 7.5 7.5" />
+                            <path d="M12 3v18" />
+                          </svg>Ganancia neta
+                        </div>
+                        <p
+                          class="text-sm sm:text-base md:text-sm lg:text-base font-bold text-emerald-800 tracking-tight break-all">
+                          +₲ 134.950.000</p>
+                        <p class="text-[11px] text-emerald-700">Por cada guaraní invertido, recuperaron 17</p>
+                      </div>
+                    </div>
+                    <p class="mt-4 text-[11px] text-emerald-700/70 text-center leading-relaxed">Basado en el caso real
+                      de <a href="#portafolio"
+                        class="font-semibold underline underline-offset-2 hover:text-emerald-800 transition-colors">Haverland
+                        Electrodomésticos</a> — Ver métricas reales abajo.</p>
+                    <p class="mt-2 text-[10px] text-emerald-600/60 text-center italic leading-relaxed">Estos resultados
+                      suceden cuando el producto es muy bueno y la estrategia es impecable.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="reveal">
+              <div
+                class="shine-surface premium-lift bg-white rounded-3xl p-7 border border-indigo-100 shadow-2xl shadow-indigo-100/50 relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-white via-indigo-50/40 to-white/60 opacity-100">
+                </div>
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10">
+                  <p class="text-lg font-bold text-slate-900 text-center sm:text-left">Si no me crees, <span
+                      class="text-indigo-500">mira mis resultados</span></p>
+                  <a href="#portafolio"
+                    class="shine-on-hover bg-indigo-500 text-white px-8 py-3.5 rounded-full font-bold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 text-sm group">Ver
+                    métricas <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none"
+                      viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ COMPARISON ════════ -->
+    <section class="py-20 bg-white px-4 border-y border-black/5" aria-label="Mito vs Realidad">
+      <div class="max-w-5xl mx-auto">
+        <div class="reveal mb-12 text-center">
+          <h2 class="font-display tracking-tight text-3xl md:text-4xl font-bold text-slate-900">Mito vs. Realidad</h2>
+          <p class="text-slate-500 mt-3 text-lg">Cambiá tu mindset, cambiá tus resultados.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div
+            class="reveal premium-lift bg-[#F8F9FB] rounded-2xl p-6 border border-black/5 hover:shadow-card hover:-translate-y-1 transition-all duration-300 group">
+            <div class="mb-4">
+              <div class="flex items-center gap-2 text-red-500 mb-2"><svg class="w-5 h-5" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg><span class="text-xs font-bold uppercase tracking-wider text-red-500/80">Mito</span></div>
+              <p class="text-slate-500 font-medium line-through decoration-red-300/50 decoration-2">Las fotos son
+                suficientes.</p>
+            </div>
+            <div class="pt-4 border-t border-black/5">
+              <div class="flex items-center gap-2 text-green-600 mb-2"><svg class="w-5 h-5" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg><span class="text-xs font-bold uppercase tracking-wider text-green-600/80">Realidad</span></div>
+              <p class="text-slate-900 font-bold text-lg group-hover:text-indigo-500 transition-colors duration-300">Los
+                anuncios traen ventas.</p>
+            </div>
+          </div>
+          <div
+            class="reveal premium-lift bg-[#F8F9FB] rounded-2xl p-6 border border-black/5 hover:shadow-card hover:-translate-y-1 transition-all duration-300 group"
+            style="transition-delay:100ms">
+            <div class="mb-4">
+              <div class="flex items-center gap-2 text-red-500 mb-2"><svg class="w-5 h-5" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg><span class="text-xs font-bold uppercase tracking-wider text-red-500/80">Mito</span></div>
+              <p class="text-slate-500 font-medium line-through decoration-red-300/50 decoration-2">Necesito más
+                seguidores</p>
+            </div>
+            <div class="pt-4 border-t border-black/5">
+              <div class="flex items-center gap-2 text-green-600 mb-2"><svg class="w-5 h-5" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg><span class="text-xs font-bold uppercase tracking-wider text-green-600/80">Realidad</span></div>
+              <p class="text-slate-900 font-bold text-lg group-hover:text-indigo-500 transition-colors duration-300">
+                Necesitás más clientes</p>
+            </div>
+          </div>
+          <div
+            class="reveal premium-lift bg-[#F8F9FB] rounded-2xl p-6 border border-black/5 hover:shadow-card hover:-translate-y-1 transition-all duration-300 group"
+            style="transition-delay:200ms">
+            <div class="mb-4">
+              <div class="flex items-center gap-2 text-red-500 mb-2"><svg class="w-5 h-5" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg><span class="text-xs font-bold uppercase tracking-wider text-red-500/80">Mito</span></div>
+              <p class="text-slate-500 font-medium line-through decoration-red-300/50 decoration-2">El marketing es un
+                gasto</p>
+            </div>
+            <div class="pt-4 border-t border-black/5">
+              <div class="flex items-center gap-2 text-green-600 mb-2"><svg class="w-5 h-5" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg><span class="text-xs font-bold uppercase tracking-wider text-green-600/80">Realidad</span></div>
+              <p class="text-slate-900 font-bold text-lg group-hover:text-indigo-500 transition-colors duration-300">Es
+                tu motor de ventas</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ BIO ════════ -->
+    <section class="py-24 max-w-7xl mx-auto px-4" aria-label="Sobre Diego">
+      <div
+        class="premium-lift bg-white rounded-3xl p-8 md:p-12 shadow-card border border-black/5 flex flex-col md:flex-row items-center gap-12 hover:shadow-card-hover transition-shadow duration-500">
+        <div class="reveal flex-1 order-2 md:order-1">
+          <h2 class="font-display tracking-tight text-4xl font-bold text-slate-900 mb-6">No soy una agencia.</h2>
+          <div class="space-y-4 text-slate-600 text-lg leading-relaxed mb-8">
+            <p>Soy el jefe del proyecto y me hago cargo de todo: las fotos, la estrategia, los anuncios, los resultados.
+              Tengo detrás el equipo de <span class="font-semibold text-slate-900">Agencia Zeta</span> — diseñadores y
+              especialistas que ejecutan partes del proceso — pero vos hablás conmigo. Yo conozco tu marca de punta a
+              punta. Yo te doy la cara.</p>
+            <p>No vas a explicarle tu negocio a cuatro personas distintas. No vas a esperar tres días para que "el
+              equipo revise tu consulta". Un mensaje de WhatsApp. Directo. Y avanzamos.</p>
+          </div>
+          <blockquote class="shine-surface bg-slate-50 rounded-xl p-5 border-l-4 border-indigo-500 relative">
+            <div class="absolute -top-2 -left-1 text-indigo-500/20 text-4xl font-serif" aria-hidden="true">"</div>
+            <p class="text-sm text-slate-500 italic pl-2">La atención que te doy es la misma que me gustaría recibir si
+              fuera el dueño del local.</p>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ PORTFOLIO ════════ -->
+    <section id="portafolio" class="py-24 bg-[#F8F9FB]" aria-label="Portafolio de trabajos reales">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="reveal text-center mb-12">
+          <h2 class="font-display tracking-tight text-4xl md:text-5xl font-bold text-slate-900 mb-4">Trabajos Reales</h2>
+          <p class="text-slate-500 max-w-xl mx-auto text-lg">Resultados tangibles para negocios que confían en mí.</p>
+        </div>
+        <div class="flex justify-center mb-12 px-2">
+          <div class="bg-white p-1.5 rounded-2xl md:rounded-full shadow-soft border border-black/5 grid grid-cols-2 md:inline-flex md:flex-nowrap gap-1 md:gap-0 w-full md:w-auto"
+            role="tablist">
+            <button onclick="setTab('branding')" id="tab-branding" role="tab" aria-selected="true"
+              aria-controls="panel-branding"
+              class="px-2 md:px-6 py-2.5 rounded-xl md:rounded-full text-[13px] md:text-sm font-semibold transition-all duration-300 bg-slate-900 text-white shadow-lg shadow-slate-900/20">Marca
+              &amp; Feed</button>
+            <button onclick="setTab('creativos')" id="tab-creativos" role="tab" aria-selected="false"
+              aria-controls="panel-creativos"
+              class="px-2 md:px-6 py-2.5 rounded-xl md:rounded-full text-[13px] md:text-sm font-semibold transition-all duration-300 text-slate-500 hover:text-indigo-500 hover:bg-indigo-50/50">Anuncios</button>
+            <button onclick="setTab('fotografias')" id="tab-fotografias" role="tab" aria-selected="false"
+              aria-controls="panel-fotografias"
+              class="px-2 md:px-6 py-2.5 rounded-xl md:rounded-full text-[13px] md:text-sm font-semibold transition-all duration-300 text-slate-500 hover:text-indigo-500 hover:bg-indigo-50/50">Fotografías</button>
+            <button onclick="setTab('metrics')" id="tab-metrics" role="tab" aria-selected="false"
+              aria-controls="panel-metrics"
+              class="px-2 md:px-6 py-2.5 rounded-xl md:rounded-full text-[13px] md:text-sm font-semibold transition-all duration-300 text-slate-500 hover:text-indigo-500 hover:bg-indigo-50/50">Métricas</button>
+          </div>
+        </div>
+        <div class="min-h-[400px]">
+          <!-- Branding -->
+          <div id="panel-branding" role="tabpanel" aria-labelledby="tab-branding" class="tab-panel-animate">
+            <div
+              class="max-w-4xl mx-auto px-4 md:px-12 grid grid-cols-1 sm:grid-cols-2 gap-12 md:gap-8 justify-items-center">
+              <div class="premium-lift group relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm w-fit max-w-full">
+                <div class="relative inline-block"><img
+                    src="https://flourishing-haupia-8fcad7.netlify.app/images/699e4c568ae9a1181746a6bc.webp"
+                    alt="Viruta joyas — Feed de marca" loading="lazy"
+                    class="block max-w-full h-auto max-h-[65vh] object-contain transition-transform duration-700 hover:scale-105" />
+                  <div
+                    class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                  </div><a href="https://www.instagram.com/viruta.py/" target="_blank" rel="noopener noreferrer"
+                    class="absolute inset-x-0 bottom-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-between"><span
+                      class="text-white text-sm font-semibold backdrop-blur-md bg-black/20 px-5 py-2.5 rounded-full border border-white/30 shadow-sm">Viruta
+                      joyas</span><svg class="w-5 h-5 text-white/80 mr-1" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                    </svg></a>
+                </div>
+              </div>
+              <div class="premium-lift group relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm w-fit max-w-full">
+                <div class="relative inline-block"><img
+                    src="https://flourishing-haupia-8fcad7.netlify.app/images/699e4c56456975f9ab317823.webp"
+                    alt="La cocina de Sil — Feed de marca" loading="lazy"
+                    class="block max-w-full h-auto max-h-[65vh] object-contain transition-transform duration-700 hover:scale-105" />
+                  <div
+                    class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                  </div><a href="https://www.instagram.com/lacocinadesilpy/?hl=es" target="_blank"
+                    rel="noopener noreferrer"
+                    class="absolute inset-x-0 bottom-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-between"><span
+                      class="text-white text-sm font-semibold backdrop-blur-md bg-black/20 px-5 py-2.5 rounded-full border border-white/30 shadow-sm">La
+                      cocina de Sil</span><svg class="w-5 h-5 text-white/80 mr-1" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                    </svg></a>
+                </div>
+              </div>
+              <div class="premium-lift group relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm w-fit max-w-full">
+                <div class="relative inline-block"><img
+                    src="https://flourishing-haupia-8fcad7.netlify.app/images/699e4c56590acb0d9331f910.webp"
+                    alt="Solanas Padel — Feed de marca" loading="lazy"
+                    class="block max-w-full h-auto max-h-[65vh] object-contain transition-transform duration-700 hover:scale-105" />
+                  <div
+                    class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                  </div><a href="https://www.instagram.com/solanaspadelpy/" target="_blank" rel="noopener noreferrer"
+                    class="absolute inset-x-0 bottom-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-between"><span
+                      class="text-white text-sm font-semibold backdrop-blur-md bg-black/20 px-5 py-2.5 rounded-full border border-white/30 shadow-sm">Solanas
+                      Padel</span><svg class="w-5 h-5 text-white/80 mr-1" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                    </svg></a>
+                </div>
+              </div>
+              <div class="premium-lift group relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm w-fit max-w-full">
+                <div class="relative inline-block"><img
+                    src="https://flourishing-haupia-8fcad7.netlify.app/images/699f086295735c79c9b08a4e.webp"
+                    alt="La Clika bar — Feed de marca" loading="lazy"
+                    class="block max-w-full h-auto max-h-[65vh] object-contain transition-transform duration-700 hover:scale-105" />
+                  <div
+                    class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                  </div><a href="https://www.instagram.com/laclikabar/" target="_blank" rel="noopener noreferrer"
+                    class="absolute inset-x-0 bottom-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-between"><span
+                      class="text-white text-sm font-semibold backdrop-blur-md bg-black/20 px-5 py-2.5 rounded-full border border-white/30 shadow-sm">La
+                      Clika bar</span><svg class="w-5 h-5 text-white/80 mr-1" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                    </svg></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Creativos -->
+          <div id="panel-creativos" role="tabpanel" aria-labelledby="tab-creativos" class="tab-panel-animate hidden">
+            <div
+              class="max-w-6xl mx-auto px-4 md:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-start">
+              <div class="premium-lift group relative rounded-3xl overflow-hidden shadow-sm"><img
+                  src="https://flourishing-haupia-8fcad7.netlify.app/images/699f9312c4ebfe80351213dc.webp"
+                  alt="Anuncio 2" loading="lazy"
+                  class="w-full h-auto block object-contain transition-transform duration-700 hover:scale-105" /></div>
+              <div class="premium-lift group relative rounded-3xl overflow-hidden shadow-sm"><img
+                  src="https://flourishing-haupia-8fcad7.netlify.app/images/699f9713e3be1479e39bdc15.webp"
+                  alt="Anuncio 3" loading="lazy"
+                  class="w-full h-auto block object-contain transition-transform duration-700 hover:scale-105" /></div>
+              <div class="premium-lift group relative rounded-3xl overflow-hidden shadow-sm"><img
+                  src="https://flourishing-haupia-8fcad7.netlify.app/images/699f93120867dd8704b79c16.webp"
+                  alt="Anuncio 1" loading="lazy"
+                  class="w-full h-auto block object-contain transition-transform duration-700 hover:scale-105" /></div>
+            </div>
+          </div>
+          <!-- Fotografias -->
+          <div id="panel-fotografias" role="tabpanel" aria-labelledby="tab-fotografias" class="tab-panel-animate hidden">
+            <div class="max-w-5xl mx-auto columns-1 sm:columns-2 lg:columns-3 gap-6">
+              <div
+                class="premium-lift break-inside-avoid mb-8 sm:mb-6 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-500 isolate">
+                <img src="https://flourishing-haupia-8fcad7.netlify.app/images/699e40634569756c832d89c8.webp"
+                  alt="Producto Gastronómico - Retrato" loading="eager"
+                  class="w-full h-auto block sm:max-h-[70vh] object-cover" />
+              </div>
+              <div
+                class="premium-lift break-inside-avoid mb-8 sm:mb-6 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-500 isolate">
+                <img src="https://flourishing-haupia-8fcad7.netlify.app/images/699e407a1001a5d5794d28d3.webp"
+                  alt="Sesión Exterior - Paisaje" loading="eager"
+                  class="w-full h-auto block sm:max-h-[70vh] object-cover" />
+              </div>
+              <div
+                class="premium-lift break-inside-avoid mb-8 sm:mb-6 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-500 isolate">
+                <img src="https://flourishing-haupia-8fcad7.netlify.app/images/699e408b1001a57d3f4d2ac8.webp"
+                  alt="Retrato Detalle" loading="eager" class="w-full h-auto block sm:max-h-[70vh] object-cover" />
+              </div>
+              <div
+                class="premium-lift break-inside-avoid mb-8 sm:mb-6 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-500 isolate">
+                <img src="https://flourishing-haupia-8fcad7.netlify.app/images/699e41f83730802a6dea8bdd.webp"
+                  alt="Social Media Lifestyle" loading="eager"
+                  class="w-full h-auto block sm:max-h-[70vh] object-cover" />
+              </div>
+              <div
+                class="premium-lift break-inside-avoid mb-8 sm:mb-6 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-500 isolate">
+                <img src="https://flourishing-haupia-8fcad7.netlify.app/images/699f805af074ea1082e21ade.webp"
+                  alt="Fotografía adicional 2" loading="eager"
+                  class="w-full h-auto block sm:max-h-[70vh] object-cover" />
+              </div>
+              <div
+                class="premium-lift break-inside-avoid mb-8 sm:mb-6 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-500 isolate">
+                <img src="https://flourishing-haupia-8fcad7.netlify.app/images/699e42ef590acb33a82ecd8f.webp"
+                  alt="Close-up Producto" loading="eager" class="w-full h-auto block sm:max-h-[70vh] object-cover" />
+              </div>
+              <div
+                class="premium-lift break-inside-avoid mb-8 sm:mb-6 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-500 isolate">
+                <img src="https://flourishing-haupia-8fcad7.netlify.app/images/699e43032837e85374500857.webp"
+                  alt="Composición Branding" loading="eager" class="w-full h-auto block sm:max-h-[70vh] object-cover" />
+              </div>
+              <div
+                class="premium-lift break-inside-avoid mb-8 sm:mb-6 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-500 isolate">
+                <img src="https://flourishing-haupia-8fcad7.netlify.app/images/699f7ae69a0c1807cfa29f6f.webp"
+                  alt="Fotografía adicional 1" loading="eager"
+                  class="w-full h-auto block sm:max-h-[70vh] object-cover" />
+              </div>
+            </div>
+          </div>
+          <!-- Metrics -->
+          <div id="panel-metrics" role="tabpanel" aria-labelledby="tab-metrics" class="tab-panel-animate hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div
+                class="premium-lift bg-white rounded-3xl p-6 border border-black/5 shadow-card hover:shadow-card-hover transition-shadow duration-500 md:col-span-2">
+                <div class="flex items-center justify-between mb-6">
+                  <div>
+                    <h3 class="text-xl font-bold text-slate-900">Pauta &amp; Ads</h3>
+                    <p class="text-slate-400 text-sm mt-1">Resultados Reales en Números</p>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div
+                    class="premium-lift rounded-2xl overflow-hidden border border-black/5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]">
+                    <div class="bg-slate-50 px-6 pt-6">
+                      <div class="flex flex-wrap items-center gap-2 pb-4 border-b border-black/5"><span
+                          class="inline-flex items-center bg-indigo-500/10 text-indigo-500 text-xs font-bold px-3 py-1 rounded-full">Haverland</span><span
+                          class="text-slate-400 text-xs">Electrodomésticos · Clientes Potenciales</span></div>
+                    </div>
+                    <div class="bg-white relative overflow-hidden flex items-start justify-center">
+                      <div class="w-full overflow-hidden" style="min-height:280px"><img
+                          src="https://flourishing-haupia-8fcad7.netlify.app/images/699f99f59a0c187565ad6ed5.webp"
+                          alt="Métricas Haverland — inversión 5.849.770 Gs., 147 ventas cerradas" loading="lazy"
+                          class="w-full h-auto block transform -translate-y-[11.5%] scale-[1.01]" /></div>
+                    </div>
+                    <div class="bg-slate-50 p-6">
+                      <h4 class="font-semibold text-slate-800 text-base mb-3 flex items-center gap-2">
+                        <span>📈</span>Haverland — invirtió ₲ 5.850.000 y facturó ₲ 143.000.000
+                      </h4>
+                      <p class="text-slate-600 text-sm leading-relaxed mb-4">Pusieron ₲ 5.850.000 en publicidad de Meta.
+                        Con eso cerramos 147 ventas de electrodomésticos y atrajimos a más de 1.600 personas
+                        interesadas. Cada guaraní que invirtieron les volvió 24 veces más.</p>
+                      <p class="text-green-600 font-semibold text-sm">× 24 — por cada guaraní que pusieron en
+                        publicidad, recuperaron veinticuatro.</p>
+                    </div>
+                  </div>
+                  <div
+                    class="premium-lift rounded-2xl overflow-hidden border border-black/5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]">
+                    <div class="bg-slate-50 px-6 pt-6">
+                      <div class="flex flex-wrap items-center gap-2 pb-4 border-b border-black/5"><span
+                          class="inline-flex items-center bg-indigo-500/10 text-indigo-500 text-xs font-bold px-3 py-1 rounded-full">Viruta</span><span
+                          class="text-slate-400 text-xs">Joyas y Accesorios · Campañas de Mensajes</span></div>
+                    </div>
+                    <div class="bg-white relative overflow-hidden flex items-start justify-center">
+                      <div class="w-full overflow-hidden" style="min-height:280px"><img
+                          src="https://flourishing-haupia-8fcad7.netlify.app/images/699f99f3e3be14967d9d8d5d.webp"
+                          alt="Métricas Viruta — inversión 2.000.000 Gs., 112 ventas concretadas" loading="lazy"
+                          class="w-full h-auto block transform -translate-y-[14%] scale-[1.01]" /></div>
+                    </div>
+                    <div class="bg-slate-50 p-6">
+                      <h4 class="font-semibold text-slate-800 text-base mb-3 flex items-center gap-2">
+                        <span>📈</span>Viruta — invirtió ₲ 2.000.000 y facturó ₲ 33.000.000
+                      </h4>
+                      <p class="text-slate-600 text-sm leading-relaxed mb-4">Pusieron ₲ 2.000.000 en publicidad de Meta.
+                        Con eso logramos que más de 1.100 clientas potenciales escribieran a la marca y cerramos 112
+                        ventas de joyas. Cada guaraní que invirtieron les volvió 16 veces más.</p>
+                      <p class="text-green-600 font-semibold text-sm">× 16 — por cada guaraní que pusieron en
+                        publicidad, recuperaron dieciséis.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="premium-lift bg-white rounded-3xl p-8 border border-black/5 shadow-card hover:shadow-card-hover transition-shadow duration-500 md:col-span-2">
+                <div class="flex items-center justify-between mb-8">
+                  <div>
+                    <h3 class="text-xl font-bold text-slate-900">Contenido Orgánico</h3>
+                    <p class="text-slate-400 text-sm mt-1">Alcance &amp; Engagement</p>
+                  </div>
+                  <div class="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full font-bold text-sm shadow-sm">+100k
+                    views</div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-4 px-2 md:px-8">
+                  <div class="space-y-4 flex flex-col items-center"><span
+                      class="inline-flex items-center bg-indigo-500/10 text-indigo-500 text-xs font-bold px-3 py-1 rounded-full">Silvia
+                      Romero</span>
+                    <div
+                      class="rounded-2xl overflow-hidden shadow-sm border border-black/5 bg-black/5 w-full max-w-[400px] md:max-w-none">
+                      <img src="https://flourishing-haupia-8fcad7.netlify.app/images/699e4c56456975cd73317825.webp"
+                        alt="Métricas contenido orgánico 1"
+                        class="w-full h-auto md:max-h-[65vh] object-contain block" />
+                    </div>
+                  </div>
+                  <div class="space-y-4 flex flex-col items-center"><span
+                      class="inline-flex items-center bg-indigo-500/10 text-indigo-500 text-xs font-bold px-3 py-1 rounded-full">Solanas
+                      padel</span>
+                    <div
+                      class="rounded-2xl overflow-hidden shadow-sm border border-black/5 bg-black/5 w-full max-w-[400px] md:max-w-none">
+                      <img src="https://flourishing-haupia-8fcad7.netlify.app/images/699e4c564569759ed4317822.webp"
+                        alt="Métricas contenido orgánico 2"
+                        class="w-full h-auto md:max-h-[65vh] object-contain block" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ OFFER ════════ -->
+    <section id="oferta" class="py-24 px-4 bg-white relative overflow-hidden" aria-label="Oferta de servicio">
+      <div
+        class="absolute top-0 right-0 w-full h-full bg-gradient-to-b from-indigo-50/40 via-purple-50/20 to-white -z-10"
+        aria-hidden="true"></div>
+      <div class="max-w-6xl mx-auto relative z-10">
+        <div class="reveal text-center mb-16">
+          <h2 class="font-display tracking-tight text-4xl md:text-5xl font-bold text-slate-900 mb-4">Dos fases. Sin letra chica. Sin
+            contratos anuales.</h2>
+          <p class="text-xl text-slate-500 font-normal">Escalamos tu negocio paso a paso.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-8 mb-16">
+          <div class="reveal h-full">
+            <div
+              class="premium-lift bg-white rounded-3xl p-6 md:p-10 border border-black/5 shadow-card relative hover:shadow-card-hover transition-all duration-500 h-full flex flex-col">
+              <div
+                class="bg-indigo-50 text-indigo-500 px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest inline-block w-fit mb-6">
+                Fase 1 — Gratis</div>
+              <div class="flex items-baseline gap-2 mb-6"><span class="text-4xl sm:text-5xl font-bold text-slate-900">Gratis</span></div>
+              <div class="space-y-4 mb-8 flex-grow">
+                <div class="flex gap-3"><span class="text-green-500 font-bold">✓</span>
+                  <p class="font-bold text-slate-800">Rebranding + fotos + feed nuevo</p>
+                </div>
+                <div class="flex gap-3"><span class="text-green-500 font-bold">✓</span>
+                  <p class="font-bold text-slate-800">Entrega en 7 días hábiles</p>
+                </div>
+                <p class="text-slate-500 text-sm bg-slate-50 p-4 rounded-xl italic border-l-4 border-slate-200">"Si no te
+                  gusta el resultado, no seguimos."</p>
+              </div>
+              <a href="https://wa.me/595975190555?text=Hola!%20Ya%20le%C3%AD%20toda%20la%20propuesta%20en%20la%20landing.%20Me%20interesa%20avanzar%20y%20quiero%20que%20hablemos%20c%C3%B3mo%20adaptarla%20a%20mi%20empresa%3A%20%E2%80%A6."
+                class="shine-on-hover block w-full text-center bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-slate-800 transition-all duration-300 shadow-lg shadow-slate-900/10 hover:-translate-y-0.5"
+                target="_blank" rel="noopener noreferrer">Iniciá la Fase 1</a>
+            </div>
+          </div>
+          <div class="reveal h-full" style="transition-delay:100ms">
+            <div
+              class="premium-lift bg-slate-900 rounded-3xl p-6 md:p-10 border border-white/10 shadow-xl relative hover:shadow-card-hover transition-all duration-500 h-full flex flex-col text-white">
+              <div
+                class="bg-indigo-500 text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest inline-block w-fit mb-6">
+                Fase 2 — Estrategia a medida</div>
+              <div class="flex flex-col gap-2 mb-6"><span
+                  class="text-3xl sm:text-5xl font-bold text-white leading-tight">Consultá tu precio</span><span
+                  class="opacity-50 text-sm">Lo armamos segun tu estrategia y objetivos</span><span
+                  class="text-white/60 text-sm">Referencia: un plan con todos los servicios ronda los G. 2.500.000</span></div>
+              <div class="space-y-4 mb-8 flex-grow">
+                <div class="flex gap-3"><span class="text-indigo-400 font-bold">✓</span>
+                  <p class="font-bold">Sesión de Fotos mensual</p>
+                </div>
+                <div class="flex gap-3"><span class="text-indigo-400 font-bold">✓</span>
+                  <p class="font-bold">Estrategia de contenido personalizada</p>
+                </div>
+                <div class="flex gap-3"><span class="text-indigo-400 font-bold">✓</span>
+                  <p class="font-bold">Anuncios activos en Meta</p>
+                </div>
+                <div class="flex gap-3 text-white/60 text-sm"><span>+</span>
+                  <p>Tu inversión mensual en publicidad</p>
+                </div>
+                <p class="text-white/40 text-sm bg-white/5 p-4 rounded-xl italic border-l-4 border-white/10">"Mes a mes.
+                  Sin ataduras."</p>
+              </div>
+              <a href="https://wa.me/595975190555?text=Hola!%20Ya%20le%C3%AD%20toda%20la%20propuesta%20en%20la%20landing.%20Me%20interesa%20avanzar%20y%20quiero%20que%20hablemos%20c%C3%B3mo%20adaptarla%20a%20mi%20empresa%3A%20%E2%80%A6."
+                class="shine-on-hover block w-full text-center bg-indigo-500 text-white py-4 rounded-2xl font-bold hover:bg-indigo-600 transition-all duration-300 shadow-lg shadow-indigo-500/20 hover:-translate-y-0.5"
+                target="_blank" rel="noopener noreferrer">Activá la Fase 2</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ WHO FOR ════════ -->
+    <section class="py-24 bg-[#F8F9FB] px-4" aria-label="Para quién es y para quién no">
+      <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
+        <div
+          class="reveal premium-lift bg-white rounded-3xl p-8 border border-green-500/10 shadow-soft relative overflow-hidden group hover:shadow-card hover:-translate-y-1 transition-all duration-300">
+          <div class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-green-500 to-emerald-400 rounded-r-full"
+            aria-hidden="true"></div>
+          <h3 class="font-display tracking-tight text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3"><span
+              class="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-lg">✓</span>Trabajemos
+            juntos si:</h3>
+          <ul class="space-y-5">
+            <li class="flex gap-3"><span class="mt-1.5 w-2 h-2 rounded-full bg-green-500 flex-shrink-0"></span>
+              <div>
+                <p class="font-bold text-slate-800 leading-snug mb-1">Tenés un local físico con productos</p>
+                <p class="text-sm text-slate-500 leading-relaxed">Sabés que lo que vendés es bueno, pero tus redes
+                  sociales actuales no demuestran esa calidad ni atraen a la gente correcta.</p>
+              </div>
+            </li>
+            <li class="flex gap-3"><span class="mt-1.5 w-2 h-2 rounded-full bg-green-500 flex-shrink-0"></span>
+              <div>
+                <p class="font-bold text-slate-800 leading-snug mb-1">Tenés presupuesto para invertir</p>
+                <p class="text-sm text-slate-500 leading-relaxed">Entendés que la publicidad es el motor para crecer y
+                  contás con capital mensual para atraer clientes nuevos de forma constante.</p>
+              </div>
+            </li>
+            <li class="flex gap-3"><span class="mt-1.5 w-2 h-2 rounded-full bg-green-500 flex-shrink-0"></span>
+              <div>
+                <p class="font-bold text-slate-800 leading-snug mb-1">Querés delegar y enfocarte en tu negocio</p>
+                <p class="text-sm text-slate-500 leading-relaxed">Buscás a alguien que se encargue de todo el proceso
+                  (fotos, estrategia y anuncios) sin que tengas que estar controlando o corrigiendo cada publicación.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="reveal premium-lift bg-white rounded-3xl p-8 border border-red-400/10 shadow-soft relative overflow-hidden group hover:shadow-card hover:-translate-y-1 transition-all duration-300"
+          style="transition-delay:100ms">
+          <div class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-red-400 to-rose-400 rounded-r-full"
+            aria-hidden="true"></div>
+          <h3 class="font-display tracking-tight text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3"><span
+              class="w-9 h-9 rounded-full bg-red-100 text-red-500 flex items-center justify-center text-lg">✕</span>No
+            soy la persona indicada si:</h3>
+          <ul class="space-y-5">
+            <li class="flex gap-3"><span class="mt-1.5 w-2 h-2 rounded-full bg-red-400 flex-shrink-0"></span>
+              <div>
+                <p class="font-bold text-slate-800 leading-snug mb-1">No tenés un producto físico para mostrar</p>
+                <p class="text-sm text-slate-500 leading-relaxed">Vendés servicios, cursos, o recién estás probando tu
+                  idea de negocio.</p>
+              </div>
+            </li>
+            <li class="flex gap-3"><span class="mt-1.5 w-2 h-2 rounded-full bg-red-400 flex-shrink-0"></span>
+              <div>
+                <p class="font-bold text-slate-800 leading-snug mb-1">Tu negocio necesita ventas urgentes</p>
+                <p class="text-sm text-slate-500 leading-relaxed">Las estrategias sólidas toman un poco de tiempo en
+                  madurar.</p>
+              </div>
+            </li>
+            <li class="flex gap-3"><span class="mt-1.5 w-2 h-2 rounded-full bg-red-400 flex-shrink-0"></span>
+              <div>
+                <p class="font-bold text-slate-800 leading-snug mb-1">Solo buscás "alguien que te maneje las redes"</p>
+                <p class="text-sm text-slate-500 leading-relaxed">Si lo único que querés es un diseñador que te suba tres
+                  fotos por semana para no tener el Instagram vacío, mi sistema te va a parecer innecesario. Yo
+                  construyo sistemas de venta.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ════════ FOOTER ════════ -->
+  <footer class="bg-[#F8F9FB] pt-20 pb-10 border-t border-black/5">
+    <div class="max-w-3xl mx-auto px-4 mb-20">
+      <div class="text-center mb-10">
+        <span
+          class="bg-indigo-50 text-indigo-500 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">FAQ</span>
+        <h2 class="font-display tracking-tight text-3xl md:text-4xl font-bold text-slate-900 mt-5">Preguntas frecuentes</h2>
+      </div>
+      <div class="space-y-4" role="region" aria-label="Preguntas frecuentes">
+        <div
+          class="bg-white rounded-2xl border border-black/5 overflow-hidden shadow-soft hover:shadow-card transition-shadow duration-300">
+          <button onclick="faq(0)" id="fq0"
+            class="w-full flex items-center justify-between p-6 text-left rounded-2xl transition-colors duration-300 hover:bg-slate-50/50"
+            aria-expanded="true" aria-controls="fa0"><span class="font-semibold text-slate-800 pr-4">¿Cuánto tengo que
+              invertir en publicidad aparte del fee mensual?</span><span id="fi0"
+              class="text-white text-xl flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 bg-indigo-500 rotate-45"
+              aria-hidden="true">+</span></button>
+          <div id="fa0" role="region" aria-labelledby="fq0" class="accordion-content open">
+            <div class="accordion-inner">
+              <div class="px-6 pb-6 text-slate-500 text-sm leading-relaxed">Para empezar, con ₲ 400.000 a ₲ 1.000.000
+                mensuales en pauta ya se ven resultados concretos. Esa plata va directo a Meta — vos la manejás desde tu
+                propia cuenta. Yo te digo cómo distribuirla para que rinda.</div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="bg-white rounded-2xl border border-black/5 overflow-hidden shadow-soft hover:shadow-card transition-shadow duration-300">
+          <button onclick="faq(1)" id="fq1"
+            class="w-full flex items-center justify-between p-6 text-left rounded-2xl transition-colors duration-300 hover:bg-slate-50/50"
+            aria-expanded="false" aria-controls="fa1"><span class="font-semibold text-slate-800 pr-4">¿Y si no me gustan
+              las fotos o el resultado?</span><span id="fi1"
+              class="text-indigo-500 text-xl flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 bg-indigo-50"
+              aria-hidden="true">+</span></button>
+          <div id="fa1" role="region" aria-labelledby="fq1" class="accordion-content">
+            <div class="accordion-inner">
+              <div class="px-6 pb-6 text-slate-500 text-sm leading-relaxed">Por eso la Fase 1 ahora es gratis. Si
+                terminamos y no te convence lo que ves, no seguimos. Tu unica inversion es una tarde de tu
+                tiempo.</div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="bg-white rounded-2xl border border-black/5 overflow-hidden shadow-soft hover:shadow-card transition-shadow duration-300">
+          <button onclick="faq(2)" id="fq2"
+            class="w-full flex items-center justify-between p-6 text-left rounded-2xl transition-colors duration-300 hover:bg-slate-50/50"
+            aria-expanded="false" aria-controls="fa2"><span class="font-semibold text-slate-800 pr-4">Ya contraté una
+              agencia y no funcionó. ¿Por qué esto sería diferente?</span><span id="fi2"
+              class="text-indigo-500 text-xl flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 bg-indigo-50"
+              aria-hidden="true">+</span></button>
+          <div id="fa2" role="region" aria-labelledby="fq2" class="accordion-content">
+            <div class="accordion-inner">
+              <div class="px-6 pb-6 text-slate-500 text-sm leading-relaxed">Porque las agencias te piden que vos les
+                mandes el material. Acá soy yo el que va a tu local con la cámara, y hago las fotos sabiendo ya qué
+                anuncio voy a correr con ellas.</div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="bg-white rounded-2xl border border-black/5 overflow-hidden shadow-soft hover:shadow-card transition-shadow duration-300">
+          <button onclick="faq(3)" id="fq3"
+            class="w-full flex items-center justify-between p-6 text-left rounded-2xl transition-colors duration-300 hover:bg-slate-50/50"
+            aria-expanded="false" aria-controls="fa3"><span class="font-semibold text-slate-800 pr-4">¿En cuánto tiempo
+              veo resultados?</span><span id="fi3"
+              class="text-indigo-500 text-xl flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 bg-indigo-50"
+              aria-hidden="true">+</span></button>
+          <div id="fa3" role="region" aria-labelledby="fq3" class="accordion-content">
+            <div class="accordion-inner">
+              <div class="px-6 pb-6 text-slate-500 text-sm leading-relaxed">El branding y el feed lo tenés en 7 días. Los
+                resultados de publicidad, entre 2 y 4 semanas de campaña activa ya hay datos concretos para evaluar.
+                Aunque a partir de los 2 meses es que recién se pueden conseguir muy buenos resultados optimizados a tu
+                cuenta.</div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="bg-white rounded-2xl border border-black/5 overflow-hidden shadow-soft hover:shadow-card transition-shadow duration-300">
+          <button onclick="faq(4)" id="fq4"
+            class="w-full flex items-center justify-between p-6 text-left rounded-2xl transition-colors duration-300 hover:bg-slate-50/50"
+            aria-expanded="false" aria-controls="fa4"><span class="font-semibold text-slate-800 pr-4">¿Tengo que firmar
+              algún contrato?</span><span id="fi4"
+              class="text-indigo-500 text-xl flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 bg-indigo-50"
+              aria-hidden="true">+</span></button>
+          <div id="fa4" role="region" aria-labelledby="fq4" class="accordion-content">
+            <div class="accordion-inner">
+              <div class="px-6 pb-6 text-slate-500 text-sm leading-relaxed">No. La Fase 2 es mes a mes. Si sentís que no
+                está funcionando, me avisás y cortamos. Sin penalidades.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-black/5 pt-8">
+      <span class="font-display text-xl font-black tracking-tighter"><span
+          class="bg-gradient-to-br from-slate-900 to-indigo-500 bg-clip-text text-transparent">Nuñez</span></span>
+      <p class="text-slate-400 text-sm">© <span id="yr"></span> Diego Núñez — Full Stack Marketer | Asunción, Paraguay
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    function trackWhatsAppStartTrial() {
+      if (typeof window.fbq !== 'function') return;
+      window.fbq('track', 'StartTrial', {
+        value: '0.00',
+        currency: 'USD',
+        predicted_ltv: '0.00'
+      });
+    }
+
+    document.querySelectorAll('a[href*="wa.me"], a[href*="api.whatsapp.com"]').forEach((link) => {
+      link.addEventListener('click', trackWhatsAppStartTrial);
+    });
+
+    // Navbar scroll
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 20) {
+        nav.classList.add('bg-white/80', 'backdrop-blur-xl', 'shadow-soft', 'py-2');
+        nav.classList.remove('bg-transparent', 'py-4');
+      } else {
+        nav.classList.remove('bg-white/80', 'backdrop-blur-xl', 'shadow-soft', 'py-2');
+        nav.classList.add('bg-transparent', 'py-4');
+      }
+    });
+
+    // Mobile menu
+    let menuOpen = false;
+    document.getElementById('menu-btn').addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      const m = document.getElementById('mobile-menu');
+      if (menuOpen) {
+        m.classList.remove('max-h-0', 'opacity-0'); m.classList.add('max-h-80', 'opacity-100');
+        document.getElementById('icon-open').classList.add('hidden');
+        document.getElementById('icon-close').classList.remove('hidden');
+        document.getElementById('menu-btn').setAttribute('aria-expanded', 'true');
+      } else { closeMenu(); }
+    });
+    function closeMenu() {
+      menuOpen = false;
+      const m = document.getElementById('mobile-menu');
+      m.classList.add('max-h-0', 'opacity-0'); m.classList.remove('max-h-80', 'opacity-100');
+      document.getElementById('icon-open').classList.remove('hidden');
+      document.getElementById('icon-close').classList.add('hidden');
+      document.getElementById('menu-btn').setAttribute('aria-expanded', 'false');
+    }
+
+    // Reveal
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('v'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-r').forEach(el => obs.observe(el));
+
+    // Tabs
+    const TABS = ['branding', 'creativos', 'fotografias', 'metrics'];
+    function setTab(id) {
+      TABS.forEach(t => {
+        const btn = document.getElementById('tab-' + t);
+        const panel = document.getElementById('panel-' + t);
+        if (t === id) {
+          btn.classList.add('bg-slate-900', 'text-white', 'shadow-lg', 'shadow-slate-900/20');
+          btn.classList.remove('text-slate-500', 'hover:text-indigo-500', 'hover:bg-indigo-50/50');
+          btn.setAttribute('aria-selected', 'true');
+          panel.classList.remove('hidden');
+        } else {
+          btn.classList.remove('bg-slate-900', 'text-white', 'shadow-lg', 'shadow-slate-900/20');
+          btn.classList.add('text-slate-500', 'hover:text-indigo-500', 'hover:bg-indigo-50/50');
+          btn.setAttribute('aria-selected', 'false');
+          panel.classList.add('hidden');
+        }
+      });
+    }
+
+    // FAQ
+    let openFaq = 0;
+    function faq(i) {
+      const prev = openFaq;
+      openFaq = (openFaq === i) ? null : i;
+      if (prev !== null && prev !== i) {
+        document.getElementById('fa' + prev).classList.remove('open');
+        const ic = document.getElementById('fi' + prev);
+        ic.classList.remove('bg-indigo-500', 'text-white', 'rotate-45');
+        ic.classList.add('bg-indigo-50', 'text-indigo-500');
+        document.getElementById('fq' + prev).setAttribute('aria-expanded', 'false');
+      }
+      if (openFaq !== null) {
+        document.getElementById('fa' + i).classList.add('open');
+        const ic = document.getElementById('fi' + i);
+        ic.classList.add('bg-indigo-500', 'text-white', 'rotate-45');
+        ic.classList.remove('bg-indigo-50', 'text-indigo-500');
+        document.getElementById('fq' + i).setAttribute('aria-expanded', 'true');
+      } else {
+        document.getElementById('fa' + i).classList.remove('open');
+        const ic = document.getElementById('fi' + i);
+        ic.classList.remove('bg-indigo-500', 'text-white', 'rotate-45');
+        ic.classList.add('bg-indigo-50', 'text-indigo-500');
+        document.getElementById('fq' + i).setAttribute('aria-expanded', 'false');
+      }
+    }
+  </script>
+</body>
+
+</html>

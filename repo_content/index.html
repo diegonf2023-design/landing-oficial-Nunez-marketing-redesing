@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Diego — Sistema de Adquisición Visual. Fotos, marca y anuncios potenciados por IA para negocios locales en Asunción." />
+  <title>Diego | Sistema de Adquisición Visual</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#F8F9FB',
+              card: '#FFFFFF',
+              accent: '#6366F1',
+              accentHover: '#4F46E5',
+              accentLight: '#EEF2FF',
+              text: '#111827',
+              muted: '#6B7280',
+              border: '#E5E7EB'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          boxShadow: {
+            'soft': '0 8px 30px rgba(0,0,0,0.04)',
+            'card': '0 20px 40px rgba(0,0,0,0.06)',
+            'card-hover': '0 30px 60px rgba(0,0,0,0.12)',
+            'btn': '0 4px 14px 0 rgba(99, 102, 241, 0.3)',
+            'btn-hover': '0 6px 20px 0 rgba(99, 102, 241, 0.45)',
+          },
+          keyframes: {
+            'fade-in-up': {
+              '0%': { opacity: '0', transform: 'translateY(24px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            'blob': {
+              '0%': { transform: 'translate(0px, 0px) scale(1)' },
+              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+              '100%': { transform: 'translate(0px, 0px) scale(1)' }
+            },
+            'glow-pulse': {
+              '0%, 100%': { boxShadow: '0 0 20px rgba(99, 102, 241, 0.2)' },
+              '50%': { boxShadow: '0 0 40px rgba(99, 102, 241, 0.4)' }
+            },
+            blink: {
+              '50%': { opacity: '0' }
+            }
+          },
+          animation: {
+            'blob': 'blob 7s infinite',
+            'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+            'blink': 'blink 1s step-start infinite',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: #F8F9FB;
+      color: #0f172a;
+      overflow-x: hidden;
+    }
+
+    @keyframes blink {
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% { opacity: 0; }
+    }
+
+    @keyframes blob {
+      0% { transform: translate(0px, 0px) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+      100% { transform: translate(0px, 0px) scale(1); }
+    }
+
+    @keyframes glow-pulse {
+      0%,
+      100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
+      50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.4); }
+    }
+
+    .animate-blob {
+      animation: blob 7s infinite;
+    }
+
+    .animate-glow-pulse {
+      animation: glow-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes hero-enter {
+      from {
+        opacity: 0;
+        transform: translateY(28px) scale(0.98);
+        filter: blur(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes float-soft {
+      0%,
+      100% {
+        transform: translate3d(0, 0, 0) rotate(var(--float-rotate, 0deg));
+      }
+
+      50% {
+        transform: translate3d(0, -12px, 0) rotate(var(--float-rotate, 0deg));
+      }
+    }
+
+    @keyframes shine-sweep {
+      from {
+        transform: translateX(-120%) skewX(-18deg);
+      }
+
+      to {
+        transform: translateX(220%) skewX(-18deg);
+      }
+    }
+
+    @keyframes border-glow {
+      0%,
+      100% {
+        opacity: 0.45;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes spotlight-drift {
+      0%,
+      100% {
+        transform: translate3d(-8%, -6%, 0) scale(1);
+      }
+
+      50% {
+        transform: translate3d(8%, 6%, 0) scale(1.08);
+      }
+    }
+
+    .hero-enter {
+      opacity: 0;
+      animation: hero-enter 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: var(--enter-delay, 0ms);
+    }
+
+    .animate-float-soft {
+      animation: float-soft 6s ease-in-out infinite;
+      animation-delay: var(--float-delay, 0ms);
+    }
+
+    .shine-surface,
+    .shine-on-hover {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shine-surface::after,
+    .shine-on-hover::after {
+      content: "";
+      position: absolute;
+      inset: -40% auto -40% -30%;
+      width: 34%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+      transform: translateX(-120%) skewX(-18deg);
+      pointer-events: none;
+    }
+
+    .shine-surface::after {
+      animation: shine-sweep 4.8s ease-in-out infinite;
+      animation-delay: var(--shine-delay, 1s);
+    }
+
+    .shine-on-hover:hover::after {
+      animation: shine-sweep 0.85s ease-out;
+    }
+
+    .premium-lift {
+      transform: translateZ(0);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.45s ease;
+    }
+
+    .premium-lift:hover {
+      transform: translateY(-6px) scale(1.01);
+      border-color: rgba(99, 102, 241, 0.22);
+      box-shadow: 0 28px 70px -28px rgba(17, 24, 39, 0.28), 0 14px 36px -24px rgba(99, 102, 241, 0.55);
+    }
+
+    .glow-border {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .glow-border::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.45), rgba(16, 185, 129, 0.22), rgba(236, 72, 153, 0.22));
+      opacity: 0;
+      z-index: -1;
+      filter: blur(14px);
+      transition: opacity 0.45s ease;
+    }
+
+    .glow-border:hover::before,
+    .glow-border.is-active::before {
+      opacity: 1;
+      animation: border-glow 2.6s ease-in-out infinite;
+    }
+
+    .ambient-spotlight {
+      position: absolute;
+      inset: auto 8% -12% auto;
+      width: min(34rem, 78vw);
+      height: min(34rem, 78vw);
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.16), rgba(236, 72, 153, 0.08) 42%, transparent 68%);
+      filter: blur(22px);
+      pointer-events: none;
+      animation: spotlight-drift 9s ease-in-out infinite;
+    }
+
+    .tab-panel-animate {
+      animation: hero-enter 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+      animation-delay: 4s;
+    }
+
+    .cursor-blink {
+      display: inline-block;
+      width: 3px;
+      height: 0.85em;
+      background-color: #6366F1;
+      margin-left: 2px;
+      vertical-align: middle;
+      border-radius: 1px;
+      animation: blink 1s step-start infinite;
+    }
+
+    .accordion-content {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.35s ease-out, opacity 0.3s ease-out;
+      opacity: 0;
+    }
+
+    .accordion-content.open {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+
+    .accordion-inner {
+      overflow: hidden;
+    }
+
+    .reveal {
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(2rem);
+      opacity: 0;
+      filter: blur(8px);
+    }
+
+    .reveal.v {
+      transform: translateY(0);
+      opacity: 1;
+      filter: blur(0);
+    }
+
+    .reveal-r {
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateX(2rem);
+      opacity: 0;
+      filter: blur(8px);
+    }
+
+    .reveal-r.v {
+      transform: translateX(0);
+      opacity: 1;
+      filter: blur(0);
+    }
+
+    .reveal.v.premium-lift:hover,
+    .reveal-r.v.premium-lift:hover {
+      transform: translateY(-6px) scale(1.01);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.001ms !important;
+      }
+
+      .hero-enter,
+      .reveal,
+      .reveal-r {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+      }
+    }
+
+    :focus-visible {
+      outline: 2px solid #6366F1;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #F8F9FB;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #D1D5DB;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9CA3AF;
+    }
+  </style>
+  <!-- Meta Pixel Code -->
+  <script>
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ?
+          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+      n.queue = []; t = b.createElement(e); t.async = !0;
+      t.src = v; s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2107569623428591');
+    fbq('track', 'PageView');
+  </script>
+  <!-- End Meta Pixel Code -->
+  <meta name="facebook-domain-verification" content="zefds9b6fcytfd51etb5e5ovi8nbc6" />
+</head>
+
+<body class="font-sans">
+  <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=618681248007314&ev=PageView&noscript=1" /></noscript>
+  <div id="root"></div>
+  <script type="module" src="/src/index.tsx"></script>
+</body>
+
+</html>

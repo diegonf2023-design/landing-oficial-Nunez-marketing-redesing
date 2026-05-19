@@ -1,0 +1,8 @@
+{
+  "name": "Nuñez Marketing Landing Redesign",
+  "description": "A modern UI redesign of the Nuñez Marketing official landing page, featuring modern animations and specialized components.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
